@@ -1,26 +1,38 @@
 import {  CheckBox, LabelImportantOutlined, StarBorder, StarBorderOutlined } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import React from 'react'
-import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
+import {useNavigate} from 'react-router-dom';
+import { useAppDispatch } from '../app/hooks';
+import { selectMailItem } from '../features/mailSlice';
+import MailModel from '../models/mail_model';
 interface EmailRowProps{
     title: string;
     id: string;
     description: string;
     subject: string;
-    time: string;
+    time: number;
+    onClick: React.MouseEventHandler<HTMLDivElement> | undefined;
+    sender: string;
+    reciever: string;
 }
 
 
 function EmailRow(props: EmailRowProps) {
-  const navigate = useNavigate();
-  const handleNaviagate = ()=>{
+ const navigate = useNavigate();
+ const dispatch = useAppDispatch();
+ const time = new Date(props.time * 1000 ).toUTCString()
+const handleOnClick = ()=>{
+  const newMail: MailModel = {id: props.id, message: props.description, subject:props.subject, time: time, title: props.title,senderMail: props.sender, recieverMail: props.reciever}
+  dispatch(selectMailItem(newMail))
     navigate('/mail');
-  }
+
+}
+
   return (
-    <EmailRowContainer onClick={handleNaviagate}>
+    <EmailRowContainer onClick={handleOnClick}>
       <EmailRowOptions>
-      <CheckBox/>
+      <CheckBox  color='primary'  />
         <IconButton>
             <StarBorderOutlined/>
         </IconButton>
@@ -30,7 +42,7 @@ function EmailRow(props: EmailRowProps) {
       </EmailRowOptions>
       {/* Title */}
       <EmailRowTitle>
-      <h3>{props.title}</h3>
+      <h3>{props.reciever}</h3>
       </EmailRowTitle>
       {/* Message */}
       <EmailRowMessage>
@@ -38,13 +50,10 @@ function EmailRow(props: EmailRowProps) {
      <span>- {props.description}</span>
      </h4>
       </EmailRowMessage>
-      {/* <EmailRowDescription>
-      <span>{props.description}</span>
-      </EmailRowDescription> */}
-      {/* Description */}
+      {/* Time */}
       <EmailRowTime>
         <p>
-        {props.time}
+        {new Date(props.time * 1000 ).toUTCString()}
         </p>
       </EmailRowTime>
     </EmailRowContainer>

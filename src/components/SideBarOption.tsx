@@ -29,8 +29,8 @@ const SideBarOptionContainer = styled.div`
         align-items: center;
         height: 40px;
         padding: 0 10px;
-        border-top-left-radius: 20px;
         border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
         cursor: pointer;
         color: #818181;
 

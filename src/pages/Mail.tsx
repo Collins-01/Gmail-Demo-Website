@@ -4,9 +4,12 @@ import React from 'react'
 import styled from 'styled-components';
 import {useNavigate} from 'react-router-dom';
 import { fontSize } from '@mui/system';
+import { useAppSelector } from '../app/hooks';
+import { selectMail } from '../features/mailSlice';
 
 function Mail() {
   const navigate = useNavigate();
+  const mail  = useAppSelector(selectMail).selectedMail;
   const handleNavigate=()=>{
     navigate('/')
   }
@@ -67,16 +70,17 @@ function Mail() {
       <MailBody>
       {/* Mail Body Header */}
       <MailBodyHeader>
-        <h2>Subject</h2>
+        <h2>{mail?.subject}</h2>
         <h2>
           <LabelImportant style={{color: '#e8ab02'}}/>
-          <p>Title </p>
-          <p style={{top: '24px' ,position: 'absolute' , right: '0',  fontSize: '24px', color: 'gray' }}>10:00pm</p>
+          <p>{mail?.recieverMail} </p>
+          <p style={{top: '24px' ,position: 'absolute' , right: '0',  fontSize: '24px', color: 'gray' }}>{new Date(mail?.time ?? 1000000 * 1000).toUTCString()}</p>
         </h2>
       </MailBodyHeader>
+      {/* Mail Message */}
       <MailMessage>
-        {/* Mail Message */}
-        {'This is a message .'}
+        
+        {mail?.message}
       </MailMessage>
       </MailBody>
     </MailContainer>

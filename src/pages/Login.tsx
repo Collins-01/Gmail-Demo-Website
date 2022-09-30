@@ -13,23 +13,14 @@ function Login() {
   const handleSignIn = async()=>{
     try {
       const res = await signInWithPopup(auth, provider);
-      if(res.user){
-        const newUser: UserModel = {
-          displayName: res.user.displayName ?? '',
-          email: res.user.email?? '',
-          photoURL: res.user.photoURL ?? '', 
-          uid: res.user.uid
-        }
-        const authState: AuthState = { 
-          user: newUser
-        }
-          dispatch(updateUser(authState));
-          navigate('/')
-
+      const newUser: UserModel = {
+        displayName: res.user.displayName ?? '',
+        email: res.user.email?? '',
+        photoURL: res.user.photoURL ?? '', 
+        uid: res.user.uid
       }
-      else{
-        return;
-      }
+        dispatch(updateUser(newUser));
+        navigate('/')
 
     } catch (error) {
       alert(error);

@@ -14,10 +14,11 @@ import EmailRow from '../components/EmailRow';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { collection, orderBy, query } from 'firebase/firestore';
 import { db } from '../firebase_app';
+import {Navigate, useNavigate} from 'react-router-dom';
 function EmailList() {
+    const navigate = useNavigate();
     const mailQuery = query(collection(db, "Mails"), orderBy('timestamp'))
     const [mails, loading, error ] = useCollection(mailQuery);
-    const myUID = '';
     const personalMails = ()=>{
         console.log(mailQuery);
         if(mails===null || mails === undefined){
@@ -25,19 +26,18 @@ function EmailList() {
         }
         else{
             return mails.docs;
-            // const m = mails?.docs.filter((item)=>item.data()['senderID'] === myUID)
-            // if(m===null || m === undefined){
-            //     return [];
-            // }
-            // return m;
         }
     }
     personalMails();
+
+    const handleNavigate = ()=>{
+        navigate('/');
+    }
   return (
     <EmailListContainer>
         <EmailListSettings>
             <EmailListSettingsLeft>
-                <CheckBox/>
+                <CheckBox  />
                 <IconButton>
                     <ArrowDownwardIcon/>
                 </IconButton>
@@ -76,14 +76,11 @@ function EmailList() {
                 personalMails().map((e)=>{
                     const data= e.data();
                     return (
-                        <EmailRow description={data['message']} id={e.id} subject={data['subject']} title=''  time='9:08pm' key={e.id}/>
+                        <EmailRow description={data['message']} id={e.id} subject={data['subject']} title=''  time={data['timestamp']['seconds']} key={e.id} onClick={handleNavigate} reciever={data['reciever']} sender={data['sender']}/>
                     );
                 })
             }
-            {/* <EmailRow description='This is a xxjebjxhejbxjhsbjxbjhsxbsxbjshbxjhsbxhsbxsbxjsbxkjsbxjsbjxbsjhbxjsbxhjsbjxbsjxbjsjhtest' id='' subject='Hello fellow streamers' title='Twitch'  time='9:08pm'/>
-            <EmailRow description='This is a test' id='' subject='Hello fellow streamers' title='Twitch'  time='9:08pm'/>
-            <EmailRow description='This is a test' id='' subject='Hello fellow streamers' title='Twitch'  time='9:08pm'/>
-            <EmailRow description='This is a test' id='' subject='Hello fellow streamers' title='Twitch'  time='9:08pm'/> */}
+           
         </EmailListList>
     </EmailListContainer>
   )
@@ -106,6 +103,7 @@ const EmailListSettings = styled.div`
     border-bottom: 1px solid whitesmoke;
     z-index: 999;
     padding-right: 10px;
+    padding-bottom: 10px;
 `;
 
 const EmailListSettingsLeft = styled.div`

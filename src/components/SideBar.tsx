@@ -18,7 +18,7 @@ import {  openSendMessage } from '../features/mailSlice';
 import { collection, orderBy, query } from 'firebase/firestore';
 import { db } from '../firebase_app';
 import { useCollection } from 'react-firebase-hooks/firestore';
-
+import './styles/SideBar.css';
 function SideBar() {
   const mailQuery = query(collection(db, "Mails"), orderBy('timestamp'))
   const [mails, loading, error ] = useCollection(mailQuery);
@@ -28,9 +28,9 @@ function SideBar() {
   }
   return (
     <SideBarContainer>
-        <ComposeButton>
-        <Button startIcon={<AddIcon fontSize='large'/>   }onClick={opendSendMail}>Compose</Button>
-        </ComposeButton>
+        
+        <Button startIcon={<AddIcon fontSize='large'/>   }onClick={opendSendMail} className='sidebar__compose'>Compose</Button>
+        
         <SideBarOption icon={<InboxIcon/>} title='Inbox' count={mails?.docs.length} selected={true} />
         <SideBarOption icon={<StarIcon/>} title='Starred' count={12} selected={false} />
         <SideBarOption icon={<AccessTimeIcon/>} title='Snoozed' count={12} selected={false} />
@@ -62,18 +62,10 @@ export default SideBar;
 const SideBarContainer = styled.div`
   flex: 0.3;
   max-width: 300px;
-  padding-right: 20px;
+  padding-right: 25px;
 `;
 
-const ComposeButton = styled.div`
-    margin-top: 15px !important;
-    margin-left: 10px !important;
-    margin-bottom: 15px !important;
-    /* color: gray;
-    padding: 15px !important;
-    border-radius: 30px !important;
-    box-shadow: 0px 2px 5px -2px rgba(0,0,0, 0.75); */
-`;
+
 
 const SideBarFooter = styled.div`
 display: flex;

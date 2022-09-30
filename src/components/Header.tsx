@@ -6,13 +6,14 @@ import SearchIcon from '@mui/icons-material/Search';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import AppsIcon from '@mui/icons-material/Apps';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { useAppDispatch } from '../app/hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {signOut} from 'firebase/auth'
 import { auth } from '../firebase_app';
 import {useNavigate} from 'react-router-dom';
-import { logOut } from '../features/authSlice';
+import { logOut, selectAuth } from '../features/authSlice';
 
 function Header() {
+    const user = useAppSelector(selectAuth);
     const navigate= useNavigate();
     const dispatch = useAppDispatch();
     const handleLogOut = async() =>{
@@ -42,7 +43,7 @@ function Header() {
             <IconButton>
                 <NotificationsIcon/>
             </IconButton>
-            <Avatar onClick={handleLogOut} />
+            <Avatar onClick={handleLogOut} alt= ''  src={user?.photoURL} style={{cursor: 'pointer'}}/>
         </HeaderRight>
     </HeaderContainer>
   )

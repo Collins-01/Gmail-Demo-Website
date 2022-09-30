@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-// import { Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import './App.css';
 import { useAppSelector } from './app/hooks';
@@ -15,13 +14,12 @@ import {useAuthState} from 'react-firebase-hooks/auth';
 import { auth } from './firebase_app';
 import Protected, { ProtectedRouteProps } from './components/Protected';
 import LoaderPage from './pages/LoaderPage';
-import HomePage from './pages/HomePage';
 
 
 
 function App() {
   const [user, loading] = useAuthState(auth);
-  const sendMessageIsOpened = useAppSelector(selectMail);
+  const sendMessageIsOpened = useAppSelector(selectMail).sendMessageIsOpen;
   const defaultProtectedRouteProps: Omit<ProtectedRouteProps, 'outlet'> = {
     isAuthenticated: user !==null && user !==undefined,
     authenticationPath: '/',
@@ -46,10 +44,8 @@ function App() {
           <AppBody>
             <SideBar/>
             <Routes>
-            
             <Route path='/mail' element={<Protected {...defaultProtectedRouteProps} outlet={<Mail />} />} />
-            <Route path='/' element={<Protected {...defaultProtectedRouteProps} outlet={<EmailList />} />} />
-            
+            <Route path='/' element={<Protected {...defaultProtectedRouteProps} outlet={<EmailList />} />} />            
            </Routes>
           </AppBody>
           {sendMessageIsOpened && <SendMail/>}

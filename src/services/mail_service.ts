@@ -4,7 +4,7 @@ import {collection, addDoc,serverTimestamp} from 'firebase/firestore';
 
 export default class MailService {
     // * Send Mail
-    static async sendMail(email: string, subject: string, message: string, senderID: string){
+    static async sendMail(email: string, subject: string, message: string, senderID: string, sender: string, reciever: string){
      try {
         const collctionRef = collection(db, "Mails");
         const p=   await  addDoc(collctionRef, {
@@ -12,7 +12,9 @@ export default class MailService {
                 subject,
                 message,
                 timestamp:  serverTimestamp(),
-                senderID 
+                senderID,
+                sender,
+                reciever
             });
             console.log(`Sent Mail Response ::::: ${p.id}`);
      } catch (error) {

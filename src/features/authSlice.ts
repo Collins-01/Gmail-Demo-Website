@@ -16,8 +16,8 @@ export const authSlice =  createSlice({
         logOut: (state)=>{
             state.user = null;
         },
-        updateUser: (state, action: PayloadAction<AuthState>)=>{
-            state.user = action.payload.user;
+        updateUser: (state, action: PayloadAction<UserModel>)=>{
+            state.user = action.payload;
         }
     }
 });
